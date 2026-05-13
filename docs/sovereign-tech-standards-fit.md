@@ -1,3 +1,8 @@
+# Status and Scope
+
+The broader project context is available at https://redtail.id, while this repository is limited to the standards-focused public mirror.
+
+
 # Sovereign Tech Standards Fit
 
 This document explains how Redtail fits the Sovereign Tech Standards programme and what standards work it can support.

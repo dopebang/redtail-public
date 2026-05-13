@@ -1,5 +1,8 @@
 # Status and Scope
 
+The official project website represents the broader Redtail project: https://redtail.id.
+This repository contains a standards-focused public mirror of the verification-relevant components and documentation.
+
 ## What is ready
 
 These components are implemented, deployed, and functional in the production system.

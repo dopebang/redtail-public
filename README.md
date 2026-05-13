@@ -2,10 +2,15 @@
 
 **Early public preview — standards-focused implementation testbed.**
 
+**Project website:** https://redtail.id
+**Public repository:** https://github.com/dopebang/redtail-public
+
 Redtail is an open-source verification layer for physical assets.
 It anchors integrity proofs for records (art, collectibles, luxury goods, cultural objects) on a public blockchain and exposes a verification surface that any party can check independently.
 
 This repository is a curated public mirror of the verification-relevant core.
+The broader Redtail project is represented by the official project website at https://redtail.id.
+
 It is published as an implementation testbed for standards work — primarily IETF SCITT, COSE, and HTTP Message Signatures — and is not a production security system.
 
 > **Status:** Early public preview.
@@ -139,6 +144,8 @@ Apache-2.0. See [LICENSE](LICENSE).
 
 ## Links
 
+- [Project website](https://redtail.id)
+- [Public repository](https://github.com/dopebang/redtail-public)
 - [Architecture](docs/architecture.md)
 - [Threat Model](docs/threat-model.md)
 - [Standards Map](docs/standards-map.md)
