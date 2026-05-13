@@ -1,0 +1,17 @@
+{
+  "description": "Record with tampered media. The calldata was anchored with the original media, but the media file has been replaced.",
+  "metadata": {
+    "title": "Test Painting",
+    "category": "painting",
+    "year": 2024
+  },
+  "mediaFiles": [
+    {
+      "filename": "test.txt",
+      "contentHex": "74616d70657265642d696d6167652d6279746573",
+      "note": "The string 'tampered-image-bytes' — different from the original 'test-image-bytes'."
+    }
+  ],
+  "calldataHex": "0x5244544c010ad009fc5c39940581bbcd3c8e604e3b07a5f07eb68c54f42d20463023ba04c8",
+  "note": "The calldata is from the valid 01-minimal vector. The media has been changed."
+}

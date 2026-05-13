@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+out/
+
+# Environment and secrets
+.env
+.env.*
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Next.js (not used in public mirror but just in case)
+.next/
+.vercel/
+
+# Test coverage
+coverage/
+
+# Misc
+*.log
+*.bak
+*.bak1
+*.bak2
+*.dump
+*.sql
+*.tar
+*.tar.gz
+*.zip
+*.7z

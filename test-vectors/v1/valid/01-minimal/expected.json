@@ -1,0 +1,7 @@
+{
+  "valid": true,
+  "canonicalMetadataJson": "{\"category\":\"painting\",\"title\":\"Test Painting\",\"year\":2024}",
+  "mediaSha256Hex": "573d05aa415feef0765c448120a4bc03f8a7f01a341a3a0cdc9c4ebe08b6e289",
+  "recordHashHex": "0ad009fc5c39940581bbcd3c8e604e3b07a5f07eb68c54f42d20463023ba04c8",
+  "calldataHex": "0x5244544c010ad009fc5c39940581bbcd3c8e604e3b07a5f07eb68c54f42d20463023ba04c8"
+}

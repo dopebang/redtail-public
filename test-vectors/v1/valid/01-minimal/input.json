@@ -1,0 +1,15 @@
+{
+  "description": "Minimal valid record with one small media file.",
+  "metadata": {
+    "title": "Test Painting",
+    "category": "painting",
+    "year": 2024
+  },
+  "mediaFiles": [
+    {
+      "filename": "test.txt",
+      "contentHex": "746573742d696d6167652d6279746573",
+      "note": "The string 'test-image-bytes' encoded as hex."
+    }
+  ]
+}

@@ -1,0 +1,219 @@
+// SPDX-License-Identifier: Apache-2.0
+//
+// Redtail — public mirror schema (verification-relevant subset).
+// This schema omits all billing, invoicing, authentication, admin,
+// and operational models. See docs/data-model.md for documentation.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Core ────────────────────────────────────────────────────────────────────
+
+model Record {
+  id          String       @id @default(cuid())
+  title       String?
+  category    String
+  categoryId  String?
+  statusV2    RecordStatus @default(ACTIVE)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  categoryRef CategoryDefinition? @relation("RecordCategory", fields: [categoryId], references: [id])
+  fieldValues RecordFieldValue[]
+  media       RecordMedia[]
+  events      RecordEvent[]
+
+  @@index([category])
+  @@index([categoryId])
+  @@index([statusV2])
+  @@index([createdAt])
+}
+
+model RecordEvent {
+  id              String    @id @default(cuid())
+  recordId        String
+  eventType       EventType
+  customEventType String?
+  title           String
+  description     String?
+  occurredAt      DateTime
+  location        String?
+  externalRef     String?
+  metadata        Json?
+  txHash          String?
+  chainId         String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  record Record        @relation(fields: [recordId], references: [id], onDelete: Cascade)
+  media  RecordMedia[]
+
+  @@index([recordId, occurredAt])
+  @@index([eventType])
+  @@index([txHash])
+}
+
+model RecordMedia {
+  id          String       @id @default(cuid())
+  recordId    String
+  eventId     String?
+  storagePath String
+  mimeType    String
+  filename    String?
+  fileSize    Int?
+  sha256      String?
+  purpose     MediaPurpose @default(SUPPLEMENTARY)
+  caption     String?
+  sortOrder   Int          @default(0)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  record Record       @relation(fields: [recordId], references: [id], onDelete: Cascade)
+  event  RecordEvent? @relation(fields: [eventId], references: [id], onDelete: SetNull)
+
+  @@index([recordId, sortOrder])
+  @@index([eventId])
+  @@index([sha256])
+}
+
+model RecordFieldValue {
+  id           String    @id @default(cuid())
+  recordId     String
+  fieldId      String
+  valueText    String?
+  valueNumber  Float?
+  valueBoolean Boolean?
+  valueDate    DateTime?
+  valueYear    Int?
+  valueJson    Json?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  record Record          @relation(fields: [recordId], references: [id], onDelete: Cascade)
+  field  FieldDefinition @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+
+  @@unique([recordId, fieldId])
+  @@index([recordId])
+  @@index([fieldId])
+}
+
+// ─── Category schema ─────────────────────────────────────────────────────────
+
+model CategoryDefinition {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String?
+  icon        String?
+  isSystem    Boolean  @default(false)
+  isPublic    Boolean  @default(true)
+  parentId    String?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  parent     CategoryDefinition?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children   CategoryDefinition[] @relation("CategoryHierarchy")
+  fields     FieldDefinition[]
+  records    Record[]             @relation("RecordCategory")
+  eventTypes CategoryEventType[]
+
+  @@index([slug])
+  @@index([parentId])
+  @@index([isPublic, isSystem])
+}
+
+model FieldDefinition {
+  id             String    @id @default(cuid())
+  categoryId     String
+  key            String
+  label          String
+  description    String?
+  fieldType      FieldType @default(TEXT)
+  isRequired     Boolean   @default(false)
+  isSearchable   Boolean   @default(true)
+  isPublic       Boolean   @default(true)
+  isSystem       Boolean   @default(false)
+  sortOrder      Int       @default(0)
+  groupName      String?
+  placeholder    String?
+  defaultValue   String?
+  allowedValues  Json?
+  validationRule String?
+  unit           String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  category CategoryDefinition @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  values   RecordFieldValue[]
+
+  @@unique([categoryId, key])
+  @@index([categoryId, sortOrder])
+}
+
+model CategoryEventType {
+  id         String    @id @default(cuid())
+  categoryId String
+  eventType  EventType
+  label      String
+  sortOrder  Int       @default(0)
+
+  category CategoryDefinition @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([categoryId, eventType])
+  @@index([categoryId])
+}
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum RecordStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+  SUSPENDED
+  TRANSFERRED
+}
+
+enum EventType {
+  CREATION
+  UPDATE
+  OWNERSHIP_TRANSFER
+  CUSTODY_TRANSFER
+  INSPECTION
+  CERTIFICATION
+  REPAIR
+  RESTORATION
+  APPRAISAL
+  SHIPMENT
+  CUSTOM
+}
+
+enum FieldType {
+  TEXT
+  NUMBER
+  BOOLEAN
+  DATE
+  DATETIME
+  YEAR
+  CURRENCY
+  ENUM
+  URL
+  EMAIL
+  DIMENSION
+  LOCATION
+  JSON
+}
+
+enum MediaPurpose {
+  PRIMARY
+  EVIDENCE
+  THUMBNAIL
+  DOCUMENT
+  SUPPLEMENTARY
+}

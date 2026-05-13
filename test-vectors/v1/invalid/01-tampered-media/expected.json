@@ -1,0 +1,4 @@
+{
+  "valid": false,
+  "reason": "Hash mismatch: the computed hash does not match the anchored hash. The record metadata or media may have been modified since anchoring."
+}
