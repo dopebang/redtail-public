@@ -142,13 +142,13 @@ Do not create it as public.
 
 ```bash
 # Using GitHub CLI:
-gh repo create dopebang/redtail --private --source . --push
+gh repo create dopebang/redtail-public --private --source . --push
 ```
 
 Or create via the GitHub web UI and push:
 
 ```bash
-git remote add origin git@github.com:dopebang/redtail.git
+git remote add origin git@github.com:dopebang/redtail-public.git
 git push -u origin main
 git push --tags
 ```
@@ -173,13 +173,13 @@ Wait 24 hours, then:
 
 ```bash
 # Clone the public repo fresh.
-git clone https://github.com/dopebang/redtail.git /tmp/redtail-public-verify
+git clone https://github.com/dopebang/redtail-public.git /tmp/redtail-public-verify
 cd /tmp/redtail-public-verify
 npm install && npm test
 
 # Re-run secret scanners on the public clone.
 gitleaks detect -v --source /tmp/redtail-public-verify
-trufflehog git https://github.com/dopebang/redtail.git --no-update
+trufflehog git https://github.com/dopebang/redtail-public.git --no-update
 ```
 
 ### Step 17: Configure repository settings
