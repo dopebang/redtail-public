@@ -46,6 +46,20 @@ Redtail addresses this by:
 - Redtail does **not** implement W3C Verifiable Credentials, COSE_Sign1, or HTTP Message Signatures today. These are on the [Roadmap](ROADMAP.md) as standards-track adoption exercises.
 - This repository is **not** the full production application. It is a curated mirror of the verification-relevant core.
 
+## Built on Base
+
+Redtail uses Base L2 as the public anchoring layer for record integrity proofs.
+
+Each anchored record stores a versioned EVM calldata payload containing:
+
+- the Redtail magic prefix `0x5244544C`;
+- a one-byte format version;
+- a 32-byte SHA-256 digest of canonical metadata and media bytes.
+
+This makes Base the public verification substrate for Redtail records: a verifier can recompute the digest, inspect the Base transaction calldata, and compare the two without relying on a private Redtail database.
+
+Redtail demonstrates a non-financial Base use case: durable verification records for physical-asset provenance, including art, collectibles, luxury goods, and cultural objects.
+
 ## Architecture overview
 
 ```
