@@ -57,6 +57,26 @@ Breakdown:
 - `01` — version
 - `a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8` — 32-byte hash (hex)
 
+## Example live verification record
+
+A live Redtail record using this anchoring format can be inspected through both the Redtail verification surface and BaseScan:
+
+- Redtail verification page: https://www.redtail.id/v/0x19a5dbe52fc8b936499155c784c4fc75e504d0442f471d6841aca13032a9edad
+- Base mainnet transaction: https://basescan.org/tx/0x19a5dbe52fc8b936499155c784c4fc75e504d0442f471d6841aca13032a9edad
+
+This example demonstrates the current v1 anchoring pattern:
+
+- Base mainnet transaction;
+- successful public verification;
+- self-send anchoring transaction;
+- zero ETH value transfer;
+- input calldata beginning with `0x5244544C01`, where:
+  - `0x5244544C` is the Redtail magic prefix (`RDTL`);
+  - `0x01` is the format version;
+  - the remaining 32 bytes are the SHA-256 digest anchor.
+
+The Redtail verification page shows the record as publicly verified on Base L2 and links the record-level verification flow to the on-chain anchor.
+
 ## Parsing rules
 
 1. If the calldata is shorter than 37 bytes, it is not a valid RDTL anchor.

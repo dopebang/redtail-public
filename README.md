@@ -60,6 +60,13 @@ This makes Base the public verification substrate for Redtail records: a verifie
 
 Redtail demonstrates a non-financial Base use case: durable verification records for physical-asset provenance, including art, collectibles, luxury goods, and cultural objects.
 
+Example live verification record:
+
+- Redtail verification page: https://www.redtail.id/v/0x19a5dbe52fc8b936499155c784c4fc75e504d0442f471d6841aca13032a9edad
+- Base mainnet transaction: https://basescan.org/tx/0x19a5dbe52fc8b936499155c784c4fc75e504d0442f471d6841aca13032a9edad
+- Pattern: self-send anchoring transaction with `0x5244544C01...` calldata
+- Purpose: public integrity anchor for a Redtail verification record
+
 ## Architecture overview
 
 ```
