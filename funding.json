@@ -1,0 +1,43 @@
+{
+  "$schema": "https://fundingjson.org/schema.json",
+  "version": "1.0.0",
+  "entity": {
+    "type": "individual",
+    "name": "Hubert Szymański",
+    "url": "https://github.com/dopebang"
+  },
+  "projects": [
+    {
+      "name": "Redtail",
+      "description": "Redtail is an open-source verification layer for physical-asset provenance. The public repository contains the verification-relevant core: documented Base L2 anchoring format, canonical hashing utilities, a headless verifier, public test vectors, and standards-focused documentation.",
+      "url": "https://redtail.id",
+      "repository": "https://github.com/dopebang/redtail-public",
+      "license": "Apache-2.0",
+      "tags": [
+        "open-source",
+        "verification",
+        "provenance",
+        "base",
+        "evm",
+        "digital-infrastructure",
+        "standards"
+      ]
+    }
+  ],
+  "funding": {
+    "currency": "USD",
+    "amount": 10000,
+    "period": "one-time",
+    "description": "Funding would support open-source verification tooling for Redtail: hardening the public verifier path, expanding valid and invalid test vectors, improving protocol documentation, preparing independent verifier implementations, and making Base L2 integrity-anchor verification easier for third-party developers to inspect and reproduce."
+  },
+  "contacts": [
+    {
+      "type": "email",
+      "value": "contact@redtail.id"
+    },
+    {
+      "type": "github",
+      "value": "https://github.com/dopebang"
+    }
+  ]
+}

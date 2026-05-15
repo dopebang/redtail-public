@@ -159,6 +159,12 @@ See [Standards Map](docs/standards-map.md) for the full analysis.
 This project is an early public preview and is **not production security infrastructure**.
 See [SECURITY.md](SECURITY.md) for the security policy, reporting process, and current limitations.
 
+## Funding
+
+Redtail is seeking funding to support open-source verification tooling, protocol documentation, public test vectors, and independent verifier implementations.
+
+See [`funding.json`](funding.json) for current funding needs.
+
 ## License
 
 Apache-2.0. See [LICENSE](LICENSE).
