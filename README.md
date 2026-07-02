@@ -35,8 +35,8 @@ Redtail Open Verifier does not verify:
 - legal authenticity,
 - ownership,
 - identity,
-- custody,
-- origin, custody, or history in the legal or forensic sense,
+- chain of custody in the legal or forensic sense,
+- origin or history of the underlying real-world material,
 - permanent availability of underlying files.
 
 If all parties delete the underlying files, their contents can no longer be verified. The verifier can only check records and files that are still available to the verifier.
