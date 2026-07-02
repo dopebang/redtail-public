@@ -1,7 +1,7 @@
 {
   "name": "redtail",
   "version": "0.1.0-preview",
-  "description": "Open-source verification layer for physical assets — standards-focused implementation testbed.",
+  "description": "Open-source verifier for tamper-evident public records and integrity proofs",
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {
@@ -14,5 +14,15 @@
     "tsx": "^4.21.0",
     "typescript": "^5.4.0",
     "vitest": "^2.0.0"
-  }
+  },
+  "keywords": [
+    "public-records",
+    "evidence-integrity",
+    "integrity-verification",
+    "tamper-evident",
+    "open-source",
+    "self-hostable",
+    "timestamping",
+    "verification"
+  ]
 }
