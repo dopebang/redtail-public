@@ -1,185 +1,122 @@
-# Redtail
+# Redtail Open Verifier
 
-**Early public preview — standards-focused implementation testbed.**
+**Early public preview — open-source verification toolkit for tamper-evident public records and evidence integrity.**
 
-**Project website:** https://redtail.id
-**Public repository:** https://github.com/dopebang/redtail-public
+Redtail Open Verifier is an open-source toolkit for verifying the integrity, continuity, and consistency of public records and their proofs.
 
-Redtail is an open-source verification layer for physical assets.
-It anchors integrity proofs for records (art, collectibles, luxury goods, cultural objects) on a public blockchain and exposes a verification surface that any party can check independently.
+It helps a third party check whether a record, its metadata, its media hashes, or its recorded change history still match a previously published integrity proof.
 
-This repository is a curated public mirror of the verification-relevant core.
-The broader Redtail project is represented by the official project website at https://redtail.id.
+The verifier does **not** verify truth, real-world authenticity, ownership, identity, custody, legal validity, or the occurrence of real-world events.
 
-It is published as an implementation testbed for standards work — primarily IETF SCITT, COSE, and HTTP Message Signatures — and is not a production security system.
+## Public-interest scope
 
-> **Status:** Early public preview.
-> The anchoring format, data model, and verification flow are functional and deployed, but the project does not yet implement COSE_Sign1, RFC 9421 (HTTP Message Signatures), or the SCITT architecture (RFC 9711).
-> It produces SHA-256 integrity proofs anchored as EVM calldata.
-> See [Status and Scope](docs/status-and-scope.md) for details.
+This repository is being prepared for public-interest verification use cases: tamper-evident public records, evidence-supporting materials, independent archival verification, and reproducible integrity checks.
 
----
+The project originated from earlier record-verification work, but the verification core is deliberately narrower and more general. It can be applied to any structured record where the goal is to verify integrity against a previously published proof.
 
-## Problem
+The project currently has no validated civil-society users, adopters, deployments, or partnerships. Public-interest outreach and usability testing are planned future work.
 
-When a physical asset changes hands, the parties involved have no shared, independently verifiable record of what that asset is, what happened to it, or who attested to those facts.
-Existing solutions require trust in a single platform, are not interoperable, and produce records that cannot be verified without the issuing service.
+## What this verifier does
 
-Redtail addresses this by:
+Redtail Open Verifier can help verify:
 
-1. Computing a deterministic SHA-256 hash over media (photographs, documents) and structured metadata.
-2. Anchoring that hash on a public L2 blockchain (Base) as immutable calldata.
-3. Exposing a public verification endpoint where any party can recompute the hash and compare it against the on-chain anchor.
-4. Maintaining an append-only event log per record, with optional per-event anchoring.
+- that record metadata matches a previously published integrity proof,
+- that media hashes match expected values,
+- that a recorded change history is internally consistent,
+- that a record has not been silently altered since it was anchored,
+- that verification can be reproduced using open code, documented formats, and test vectors.
 
-## Goals
+## What this verifier does not do
 
-- Provide a self-hostable, open-source verification layer for physical-asset provenance.
-- Serve as an implementation testbed for IETF standards adoption (SCITT, COSE, HTTP Message Signatures, verification receipts).
-- Produce implementer feedback, test vectors, and interoperability notes from a small-operator perspective.
-- Demonstrate the practical cost of standards adoption for sole-operator infrastructure.
+Redtail Open Verifier does not verify:
 
-## Non-goals
+- whether the contents of a record are true,
+- whether a real-world event occurred,
+- legal authenticity,
+- ownership,
+- identity,
+- custody,
+- origin, custody, or history in the legal or forensic sense,
+- permanent availability of underlying files.
 
-- Redtail is **not** a decentralized identity system, a token/NFT platform, or a DAO.
-- Redtail does **not** claim trustless verification in the cryptographic sense. The current anchoring model relies on a single notary wallet; see [Threat Model](docs/threat-model.md).
-- Redtail does **not** implement W3C Verifiable Credentials, COSE_Sign1, or HTTP Message Signatures today. These are on the [Roadmap](ROADMAP.md) as standards-track adoption exercises.
-- This repository is **not** the full production application. It is a curated mirror of the verification-relevant core.
+If all parties delete the underlying files, their contents can no longer be verified. The verifier can only check records and files that are still available to the verifier.
 
-## Built on Base
+## Current prototype
 
-Redtail uses Base L2 as the public anchoring layer for record integrity proofs.
+This repository is an early public preview and implementation testbed. It is not a production security system.
 
-Each anchored record stores a versioned EVM calldata payload containing:
+The public repository currently contains the verification-relevant core:
 
-- the Redtail magic prefix `0x5244544C`;
-- a one-byte format version;
-- a 32-byte SHA-256 digest of canonical metadata and media bytes.
+- canonical hashing logic,
+- anchoring-format encoder/decoder,
+- dependency-free headless verifier,
+- documented verification flow,
+- architecture documentation,
+- threat model,
+- protocol and canonicalization notes,
+- valid and invalid test vectors,
+- examples,
+- unit tests.
 
-This makes Base the public verification substrate for Redtail records: a verifier can recompute the digest, inspect the Base transaction calldata, and compare the two without relying on a private Redtail database.
+The full production application, including authentication, billing, administration, and hosted service logic, is intentionally not part of this public mirror.
 
-Redtail demonstrates a non-financial Base use case: durable verification records for physical-asset provenance, including art, collectibles, luxury goods, and cultural objects.
+## Current anchoring mechanism
 
-Example live verification record:
+The current prototype uses Base L2 as one public anchoring mechanism for integrity proofs.
 
-- Redtail verification page: https://www.redtail.id/v/0x19a5dbe52fc8b936499155c784c4fc75e504d0442f471d6841aca13032a9edad
-- Base mainnet transaction: https://basescan.org/tx/0x19a5dbe52fc8b936499155c784c4fc75e504d0442f471d6841aca13032a9edad
-- Pattern: self-send anchoring transaction with `0x5244544C01...` calldata
-- Purpose: public integrity anchor for a Redtail verification record
+This is not the point of the project. It is the current prototype substrate.
 
-## Architecture overview
+The intended direction is a pluggable anchoring layer that can support other timestamping or transparency-log mechanisms, including non-blockchain backends such as RFC 3161 timestamping, OpenTimestamps-style proofs, or signed transparency-log receipts.
 
-```
-┌─────────────┐    SHA-256     ┌──────────────┐    calldata     ┌────────────┐
-│ Media +     │───────────────▶│ Redtail      │────────────────▶│ Base L2    │
-│ Metadata    │   (canonical)  │ Notary       │  0x5244544C +   │ Blockchain │
-└─────────────┘                └──────────────┘  version + hash └────────────┘
-                                                                       │
-                                                                       ▼
-                                                              ┌────────────────┐
-                                                              │ Public         │
-                                                              │ verification   │
-                                                              │ endpoint       │
-                                                              │ /v/{txHash}    │
-                                                              └────────────────┘
-```
+Only a compact integrity payload is anchored. Record contents, media, and personal data are not written to the public anchor.
 
-The anchoring format is a self-send transaction on Base L2.
-The calldata is structured as:
+## Verification model
 
-| Offset | Length | Content |
-|--------|--------|---------|
-| 0 | 4 bytes | Magic: `0x5244544C` ("RDTL" in ASCII) |
-| 4 | 1 byte | Version: `0x01` |
-| 5 | 32 bytes | SHA-256 hash of (canonical metadata + media bytes) |
+At a high level:
 
-See [Architecture](docs/architecture.md), [On-Chain Format](docs/on-chain-format.md), and [Verification Flow](docs/verification-flow.md) for details.
+1. A record contains structured metadata and media references.
+2. Media files are represented by SHA-256 hashes.
+3. Metadata is serialized deterministically.
+4. A record digest is computed from canonical metadata and media hashes.
+5. The digest is anchored or timestamped.
+6. A verifier recomputes the digest and compares it with the published proof.
 
-## Data model
+A match means the available record still matches the published proof. A mismatch indicates the record or its referenced files differ from the proof.
 
-The core data model (see [Data Model](docs/data-model.md) and `prisma/schema.prisma`) consists of:
+## Planned work
 
-- **Record** — a named asset with structured metadata, category, and status lifecycle.
-- **RecordEvent** — an append-only event log entry (creation, transfer, inspection, certification, etc.) with optional on-chain anchor (`txHash`).
-- **RecordMedia** — media files (photos, documents) with SHA-256 integrity hashes and purpose classification.
-- **RecordFieldValue** — structured metadata fields defined by a category schema (EAV pattern).
-- **CategoryDefinition / FieldDefinition** — schema definitions for record types and their fields.
+Planned work includes:
 
-## Standards relevance
+- standalone verifier package,
+- local/offline command-line verifier,
+- portable verification receipts,
+- self-hostable public verification interface,
+- pluggable anchoring layer,
+- at least one non-blockchain timestamping or transparency-log backend,
+- expanded test vectors,
+- plain-language documentation for public-interest users,
+- external security and privacy review,
+- usability testing with public-interest workflows.
 
-Redtail intersects several active IETF and W3C work items.
-See [Standards Map](docs/standards-map.md) for the full analysis.
+## Repository status
 
-**IETF (primary):**
+Status: early public preview  
+Version: 0.1.0-preview  
+License: Apache-2.0  
+Maintainer: Hubert Szymański
 
-- SCITT (RFC 9711) — Redtail is a small, single-operator transparency service that has not yet adopted the SCITT architecture, making it a useful source of implementer feedback on adoption cost.
-- COSE (RFC 9052) — the current unsigned-hash model is a candidate for COSE_Sign1 wrapping.
-- HTTP Message Signatures (RFC 9421) — the `/v/{txHash}` verification endpoint is a candidate for response signing.
-- Verification receipts — the current receipt is ad-hoc; structuring it against SCITT receipt formats is planned.
+## Documentation
 
-**W3C (secondary):**
-
-- Verifiable Credentials Data Model 2.0 — a record with its event chain can be modeled as a VC.
-- Decentralized Identifiers — the notary wallet address can be expressed as `did:pkh:eip155:8453:0x…`.
-- C2PA (ISO 22144) — Redtail is record-centric where C2PA is asset-bytes-centric; the intersection and gaps are documented.
-
-## Repository structure
-
-```
-├── LICENSE                          Apache-2.0
-├── README.md                        This file
-├── SECURITY.md                      Security policy and reporting
-├── CONTRIBUTING.md                  Contribution guidelines
-├── ROADMAP.md                       Implementation, standards, and security roadmaps
-├── docs/
-│   ├── architecture.md              Architectural goals, components, trust boundaries
-│   ├── data-model.md                Core data model reference
-│   ├── on-chain-format.md           Calldata format specification
-│   ├── verification-flow.md         End-to-end verification lifecycle
-│   ├── protocol-notes.md            Data formats, canonicalization, versioning
-│   ├── threat-model.md              Assets, actors, attacks, residual risks
-│   ├── standards-map.md             IETF/W3C mapping and gap analysis
-│   ├── interoperability.md          Cross-system interop considerations
-│   ├── status-and-scope.md          What is ready, experimental, and out of scope
-│   ├── sovereign-tech-standards-fit.md  Positioning for standards engagement
-│   └── glossary.md                  Terminology
-├── prisma/
-│   └── schema.prisma                Core data model (verification-relevant subset)
-├── src/
-│   ├── format/                      Calldata encoder/decoder
-│   ├── hash/                        SHA-256 and canonical hashing
-│   └── verify/                      Headless verifier
-├── test-vectors/                    Valid/invalid verification test cases
-├── examples/                        Usage examples
-└── .github/                         Issue templates, CI workflows
-```
-
-## Security
-
-This project is an early public preview and is **not production security infrastructure**.
-See [SECURITY.md](SECURITY.md) for the security policy, reporting process, and current limitations.
-
-## Funding
-
-Redtail is seeking funding to support open-source verification tooling, protocol documentation, public test vectors, and independent verifier implementations.
-
-See [`funding.json`](funding.json) for current funding needs.
+- [Architecture](docs/architecture.md)
+- [Threat model](docs/threat-model.md)
+- [Verification flow](docs/verification-flow.md)
+- [Protocol and canonicalization notes](docs/protocol-notes.md)
+- [Data model](docs/data-model.md)
+- [Status and scope](docs/status-and-scope.md)
+- [Public-interest use cases](docs/public-interest-use-cases.md)
+- [OTF scope note](docs/otf-scope.md)
+- [Standards map](docs/standards-map.md)
 
 ## License
 
 Apache-2.0. See [LICENSE](LICENSE).
-
-## Links
-
-- [Project website](https://redtail.id)
-- [Public repository](https://github.com/dopebang/redtail-public)
-- [Architecture](docs/architecture.md)
-- [Threat Model](docs/threat-model.md)
-- [Standards Map](docs/standards-map.md)
-- [Verification Flow](docs/verification-flow.md)
-- [Protocol Notes](docs/protocol-notes.md)
-- [Interoperability](docs/interoperability.md)
-- [Status and Scope](docs/status-and-scope.md)
-- [Standards Fit](docs/sovereign-tech-standards-fit.md)
-- [Roadmap](ROADMAP.md)
-- [Contributing](CONTRIBUTING.md)

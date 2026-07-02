@@ -107,7 +107,7 @@ It does not cover the production application's authentication, billing, or admin
 
 - **SHA-256 collision/preimage attacks.** SHA-256 is not considered broken. If it is broken in the future, the version byte in the calldata format allows migration to a different algorithm.
 - **L2 consensus attacks.** Attacks on the Base L2 sequencer, bridge, or settlement layer are out of scope for Redtail. These should be reported to the Base/Optimism team.
-- **Physical asset fraud.** Redtail verifies that a digital record has not been altered since anchoring. It does not verify that the physical asset matches the record. A photograph of a genuine painting anchored on-chain does not prove the painting in front of you is the same one.
+- **Real-world truth and identity.** Redtail Open Verifier verifies that a digital record has not been altered since anchoring or timestamping. It does not verify that the contents of the record are true, that a described real-world event occurred, that a person or organization is who they claim to be, or that a document has legal or forensic authenticity.
 - **Social engineering.** Attacks that trick the operator into anchoring incorrect records are out of scope for the technical threat model.
 
 ## Trust model summary

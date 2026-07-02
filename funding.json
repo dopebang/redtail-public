@@ -1,64 +1,29 @@
 {
-  "$schema": "https://fundingjson.org/schema/v1.1.0.json",
-  "version": "v1.1.0",
-  "entity": {
-    "type": "individual",
-    "role": "maintainer",
+  "name": "Redtail Open Verifier",
+  "description": "An open-source verifier for tamper-evident public records, integrity proofs, and reproducible verification workflows.",
+  "repository": "https://github.com/dopebang/redtail-public",
+  "license": "Apache-2.0",
+  "status": "early public preview",
+  "maintainer": {
     "name": "Hubert Szymański",
-    "email": "contact@redtail.id",
-    "description": "Sole maintainer of Redtail, an open-source verification layer for physical-asset provenance. I maintain the public verification-relevant core, including Base L2 anchoring documentation, canonical hashing utilities, verifier modules, public test vectors, and standards-focused documentation.",
-    "webpageUrl": {
-      "url": "https://github.com/dopebang"
-    }
+    "role": "sole maintainer"
   },
-  "projects": [
+  "funding_needs": [
     {
-      "guid": "redtail",
-      "name": "Redtail",
-      "description": "Redtail is an open-source verification layer for physical-asset provenance. The public repository contains the verification-relevant core: documented Base L2 anchoring format, canonical hashing utilities, a headless verifier, public test vectors, and standards-focused documentation. Funding would support open-source verifier hardening, protocol documentation, additional test vectors, and independent verifier implementations.",
-      "webpageUrl": {
-        "url": "https://redtail.id"
-      },
-      "repositoryUrl": {
-        "url": "https://github.com/dopebang/redtail-public"
-      },
-      "licenses": [
-        "spdx:Apache-2.0"
-      ],
-      "tags": [
-        "verification",
-        "provenance",
-        "developer-tools",
-        "digital-infrastructure",
-        "open-standards",
-        "base",
-        "evm",
-        "cryptography"
-      ]
+      "title": "Public-interest verifier development",
+      "description": "Funding would support development of a standalone verifier package, local/offline command-line verifier, portable verification receipts, self-hostable public verification interface, pluggable anchoring layer, expanded test vectors, public-interest documentation, external security and privacy review, and usability testing with public-interest workflows.",
+      "amount_usd": 85000,
+      "duration_months": 9
     }
   ],
-  "funding": {
-    "channels": [
-      {
-        "guid": "email",
-        "type": "other",
-        "address": "contact@redtail.id",
-        "description": "Please contact the maintainer by email to coordinate funding logistics."
-      }
-    ],
-    "plans": [
-      {
-        "guid": "open-source-verification-tooling",
-        "status": "active",
-        "name": "Open-source verification tooling support",
-        "description": "One-time funding to support Redtail's open-source verification tooling: hardening the public verifier path, expanding valid and invalid test vectors, improving protocol documentation, preparing independent verifier implementations, and making Base L2 integrity-anchor verification easier for third-party developers to inspect and reproduce.",
-        "amount": 10000,
-        "currency": "USD",
-        "frequency": "one-time",
-        "channels": [
-          "email"
-        ]
-      }
-    ]
-  }
+  "tags": [
+    "public-records",
+    "evidence-integrity",
+    "integrity-verification",
+    "tamper-evident",
+    "open-source",
+    "self-hostable",
+    "timestamping",
+    "verification"
+  ]
 }

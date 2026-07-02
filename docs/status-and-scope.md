@@ -1,3 +1,13 @@
+## Public-interest scope
+
+This repository is being prepared for a public-interest verification use case: tamper-evident public records and evidence integrity.
+
+The verification core is not limited to physical assets. It can be applied to any structured record where the goal is to verify integrity, continuity, and consistency against a previously published proof.
+
+The project does not claim to verify truth, identity, ownership, custody, legal validity, or real-world authenticity.
+
+Current maturity: early public preview. The repository contains a verification-focused implementation testbed, not a production security system.
+
 # Status and Scope
 
 The official project website represents the broader Redtail project: https://redtail.id.

@@ -2,16 +2,16 @@
 
 ## Overview
 
-Redtail is a record-and-verify system for physical assets.
-An operator (gallery, brand, institution) creates a record describing an asset, and Redtail anchors an integrity proof of that record on a public blockchain.
-Any third party with access to the original media and metadata can independently recompute the hash and verify it against the on-chain anchor.
+Redtail Open Verifier is a record-and-verify system for structured public records.
+A publisher creates a record containing metadata and media references, and the system anchors or timestamps an integrity proof of that record.
+Any third party with access to the original media and metadata can independently recompute the hash and verify it against the published proof.
 
 This document describes the architectural goals, components, data flow, trust boundaries, and limitations.
 
 ## Architectural goals
 
 1. **Independently verifiable.** A verifier must be able to confirm a record's integrity without trusting the Redtail operator or platform. The on-chain anchor is the root of trust.
-2. **Append-only provenance.** Once an event is recorded and anchored, it cannot be modified or deleted. The event log for a record is strictly append-only.
+2. **Append-only record history.** Once an event is recorded and anchored, it cannot be modified or deleted. The event log for a record is strictly append-only.
 3. **Content-addressable media.** Every media file is identified by its SHA-256 hash. If the bytes change, the hash changes, and the verification fails.
 4. **Self-hostable.** A motivated operator should be able to run the full stack independently. No hard dependency on a proprietary service.
 5. **Standards-ready.** The architecture should not preclude adoption of COSE_Sign1, HTTP Message Signatures, SCITT receipts, or W3C VCs. The current unsigned-hash model is the simplest viable starting point; the architecture is designed to accept a signing layer without structural changes.
