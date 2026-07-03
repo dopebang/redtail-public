@@ -114,6 +114,7 @@ Maintainer: Hubert Szymański
 - [Data model](docs/data-model.md)
 - [Status and scope](docs/status-and-scope.md)
 - [Public-interest use cases](docs/public-interest-use-cases.md)
+- [AI evidence receipts](docs/ai-evidence-receipts.md)
 - [OTF scope note](docs/otf-scope.md)
 - [Standards map](docs/standards-map.md)
 
